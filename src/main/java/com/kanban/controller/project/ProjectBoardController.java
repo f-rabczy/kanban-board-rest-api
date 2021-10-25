@@ -2,23 +2,20 @@ package com.kanban.controller.project;
 
 import com.kanban.entity.project.Project;
 import com.kanban.service.project.ProjectBoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users/{userID}/projects/{projectID}/boards")
 public class ProjectBoardController {
 
-    ProjectBoardService projectBoardService;
+    private final ProjectBoardService projectBoardService;
 
-    @Autowired
-    public ProjectBoardController(ProjectBoardService projectBoardService) {
-        this.projectBoardService = projectBoardService;
-    }
-
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<?> updateProjectBoard(@PathVariable Long projectID, @RequestBody Project project){
         try{
             projectBoardService.updateProjectBoard(project,projectID);

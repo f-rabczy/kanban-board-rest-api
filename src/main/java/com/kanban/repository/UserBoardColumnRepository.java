@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserBoardColumnRepository extends JpaRepository<UserBoardColumn,Long> {
 
-    UserBoardColumn findByName(String name);
 }

@@ -2,10 +2,16 @@ package com.kanban.entity.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kanban.entity.user.UserDAO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProjectInvitation {
 
     @Id
@@ -21,27 +27,4 @@ public class ProjectInvitation {
     @JsonIgnore
     private UserDAO invitedUser;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getInviterName() {
-        return inviterName;
-    }
-
-    public void setInviterName(String inviterName) {
-        this.inviterName = inviterName;
-    }
-
-    public UserDAO getInvitedUser() {
-        return invitedUser;
-    }
-
-    public void setInvitedUser(UserDAO invitedUser) {
-        this.invitedUser = invitedUser;
-    }
 }

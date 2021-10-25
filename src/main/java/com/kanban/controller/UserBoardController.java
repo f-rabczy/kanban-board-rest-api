@@ -4,6 +4,7 @@ import com.kanban.entity.userboard.UserBoard;
 
 import com.kanban.model.json.ReturnMessageJSON;
 import com.kanban.service.UserBoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,11 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @CrossOrigin
 @RequestMapping(path = "users/{userID}/boards")
+@RequiredArgsConstructor
 public class UserBoardController {
 
-    UserBoardService userBoardService;
+    private final UserBoardService userBoardService;
 
-    @Autowired
-    public UserBoardController(UserBoardService userBoardService) {
-        this.userBoardService = userBoardService;
-    }
 
     @GetMapping
     public UserBoard getUserBoard(@PathVariable Long userID) {

@@ -9,23 +9,19 @@ import com.kanban.model.dto.TaskDTO;
 import com.kanban.model.enums.TaskColor;
 import com.kanban.repository.project.ProjectTaskRepository;
 import com.kanban.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectTaskService {
-    private ProjectService projectService;
-    private UserService userService;
-    private ProjectTaskRepository projectTaskRepository;
+    private final ProjectService projectService;
+    private final UserService userService;
+    private final ProjectTaskRepository projectTaskRepository;
 
-    @Autowired
-    public ProjectTaskService(ProjectService projectService, UserService userService, ProjectTaskRepository projectTaskRepository) {
-        this.projectService = projectService;
-        this.userService = userService;
-        this.projectTaskRepository = projectTaskRepository;
-    }
 
     public void deleteTask( Long taskID) {
         projectTaskRepository.deleteById(taskID);

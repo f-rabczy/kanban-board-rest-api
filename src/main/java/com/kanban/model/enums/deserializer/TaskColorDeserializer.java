@@ -17,14 +17,14 @@ public class TaskColorDeserializer extends StdDeserializer<TaskColor> {
         String name = node.get("name").asText();
         String cssName = node.get("cssName").asText();
         for (TaskColor color : TaskColor.values()) {
-            if(color.getName().equals(name) && color.getCssName().equals(cssName)){
+            if (color.getName().equals(name) && color.getCssName().equals(cssName)) {
                 return color;
             }
         }
         return null;
     }
 
-    public TaskColorDeserializer(){
+    public TaskColorDeserializer() {
         super(TaskColor.class);
     }
 }

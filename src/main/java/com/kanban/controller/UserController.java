@@ -7,6 +7,7 @@ import com.kanban.model.json.ReturnMessageJSON;
 import com.kanban.service.JwtUserDetailsService;
 import com.kanban.service.project.ProjectService;
 import com.kanban.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,36 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    UserService userService;
-    JwtUserDetailsService service;
-    ProjectService projectService;
-
-    @Autowired
-    public UserController(UserService userService, JwtUserDetailsService service, ProjectService service1) {
-        this.service = service;
-        this.userService = userService;
-        this.projectService = service1;
-        UserDTO user = new UserDTO();
-        user.setUsername("12345");
-        user.setPassword("12345");
-        user.setEmail("eliot.lana@yahoo.com");
-        user.setFirstName("Eliot");
-        user.setLastName("Anderson");
-
-        UserDTO user2 = new UserDTO();
-        user2.setUsername("123456");
-        user2.setPassword("123456");
-        user2.setEmail("bgcnarejonie@gmail.com");
-        user2.setFirstName("Peter");
-        user2.setLastName("Witchuck");
-
-        service.saveDTO(user);
-        service.saveDTO(user2);
-        service1.initializeProjectBoardTest();
-        service1.initializeProjectBoardTest2();
-    }
+    private final UserService userService;
 
     @GetMapping("/{id}")
     public UserDAO getUser(@PathVariable Long id) {
@@ -74,14 +49,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}/images")
-    public ProfilePicture downloadImage(@PathVariable Long id){
-        try{
-
+    public ProfilePicture downloadImage(@PathVariable Long id) {
+        try {
             return userService.downloadImage(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 
 }

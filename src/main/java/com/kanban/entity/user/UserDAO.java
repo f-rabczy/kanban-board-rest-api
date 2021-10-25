@@ -7,6 +7,9 @@ import com.kanban.entity.project.ProjectTaskComment;
 import com.kanban.entity.user.ProfilePicture;
 import com.kanban.entity.userboard.UserBoard;
 import com.kanban.service.UserService;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,6 +19,9 @@ import static com.kanban.service.UserService.decompressBytes;
 
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserDAO {
 
     @Id
@@ -44,10 +50,9 @@ public class UserDAO {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "users_projects",
-            joinColumns = { @JoinColumn(name = "user_id")},
-            inverseJoinColumns = { @JoinColumn(name = "project_id")})
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "project_id")})
     private List<Project> projects = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "author")
     private List<ProjectTaskComment> comments;
@@ -61,114 +66,30 @@ public class UserDAO {
     @Column
     private boolean hasProfilePicture = false;
 
-
-
-    public void addBoard(UserBoard userBoard){
+    public void addBoard(UserBoard userBoard) {
         this.userBoards.add(userBoard);
         userBoard.setUser(this);
     }
 
-    public void addProject(Project project){
+    public void addProject(Project project) {
         this.projects.add(project);
         project.getUsers().add(this);
     }
 
-
     public ProfilePicture getProfilePicture() {
-
-        if(hasProfilePicture){
-            return new ProfilePicture(profilePicture.getName(),profilePicture.getType(),decompressBytes(profilePicture.getPicByte()));
+        if (hasProfilePicture) {
+            return new ProfilePicture(profilePicture.getName(), profilePicture.getType(), decompressBytes(profilePicture.getPicByte()));
         }
         return null;
-    }
-
-
-
-    public void setProfilePicture(ProfilePicture profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UserBoard getDefaultBoard(){
-        return this.getUserBoards().get(0);
-    }
-
-    public List<UserBoard> getUserBoards() {
-        return userBoards;
-    }
-
-    public void setUserBoards(List<UserBoard> userBoards) {
-        this.userBoards = userBoards;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public boolean isHasProfilePicture() {
-        return hasProfilePicture;
-    }
-
-    public void setHasProfilePicture(boolean hasProfilePicture) {
-        this.hasProfilePicture = hasProfilePicture;
     }
 
     public void deleteProject(Project project){
         this.projects.remove(project);
     }
 
-
-
-//    public List<Project> getProjects() { ////Creating get method generates exception
-//        return projects;
-//    }
-//
-//    public void setProjects(List<Project> projects) {
-//        this.projects = projects;
-//    }
+    public UserBoard getDefaultBoard(){
+        return this.getUserBoards().get(0);
+    }
 
     @Override
     public String toString() {
@@ -178,7 +99,5 @@ public class UserDAO {
                 ", email='" + email + '\'' +
                 '}';
     }
-
-
 }
 

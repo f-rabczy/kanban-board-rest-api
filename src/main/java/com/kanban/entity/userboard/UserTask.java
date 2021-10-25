@@ -2,12 +2,17 @@ package com.kanban.entity.userboard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kanban.model.enums.TaskColor;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+
 import static com.kanban.model.util.DateUtil.dateConverter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "user_task")
 public class UserTask implements Comparable<UserTask> {
 
@@ -43,53 +48,13 @@ public class UserTask implements Comparable<UserTask> {
         this.date = dateConverter();
     }
 
-
-    public String getDate() {
-        return date;
+    public void setOrder(int order) {
+        this.listOrder = order;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public UserBoardColumn getColumn() {
-        return column;
-    }
-
-    public void setColumn(UserBoardColumn column) {
-        this.column = column;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public int compareTo(@NotNull UserTask o) {
+        return Integer.compare(this.listOrder, o.listOrder);
     }
 
     @Override
@@ -102,24 +67,5 @@ public class UserTask implements Comparable<UserTask> {
                 '}';
     }
 
-    public int getOrder() {
-        return listOrder;
-    }
 
-    public void setOrder(int order) {
-        this.listOrder = order;
-    }
-
-    public TaskColor getTaskColor() {
-        return taskColor;
-    }
-
-    public void setTaskColor(TaskColor taskColor) {
-        this.taskColor = taskColor;
-    }
-
-    @Override
-    public int compareTo(@NotNull UserTask o) {
-        return Integer.compare(this.listOrder,o.listOrder);
-    }
 }

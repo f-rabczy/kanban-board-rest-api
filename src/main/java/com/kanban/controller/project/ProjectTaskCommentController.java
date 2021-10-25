@@ -3,6 +3,7 @@ package com.kanban.controller.project;
 import com.kanban.entity.project.ProjectTaskComment;
 import com.kanban.model.json.ReturnMessageJSON;
 import com.kanban.service.project.ProjectTaskCommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users/{userID}/projects/{projectID}/boards/tasks/{taskID}/comments")
 public class ProjectTaskCommentController {
 
-    private ProjectTaskCommentService projectTaskCommentService;
+    private final ProjectTaskCommentService projectTaskCommentService;
 
-    @Autowired
-    public ProjectTaskCommentController(ProjectTaskCommentService projectTaskCommentService) {
-        this.projectTaskCommentService = projectTaskCommentService;
-    }
 
     @GetMapping
     public List<ProjectTaskComment> getComments(@PathVariable Long taskID) {
@@ -40,10 +38,10 @@ public class ProjectTaskCommentController {
     }
 
     @PostMapping("{commentID}/reply")
-    public ResponseEntity<?> addReply( @PathVariable Long userID,@PathVariable Long commentID,
-                                      @RequestBody String content){
+    public ResponseEntity<?> addReply(@PathVariable Long userID, @PathVariable Long commentID,
+                                      @RequestBody String content) {
         try {
-            projectTaskCommentService.addReply( userID,commentID, content);
+            projectTaskCommentService.addReply(userID, commentID, content);
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }

@@ -1,18 +1,13 @@
 package com.kanban.model.json;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class ReturnMessageJSON {
+
     private String message;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ReturnMessageJSON(String message) {
-        this.message = message;
-    }
-
 }

@@ -1,6 +1,9 @@
 package com.kanban.entity.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,6 +12,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProjectBoard {
 
     @Id
@@ -37,36 +43,6 @@ public class ProjectBoard {
         }
         this.columns.add(column);
         column.setProjectBoard(this);
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<ProjectBoardColumn> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<ProjectBoardColumn> columns) {
-        this.columns = columns;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     @Override

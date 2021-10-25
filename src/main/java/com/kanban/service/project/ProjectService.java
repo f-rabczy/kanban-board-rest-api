@@ -7,6 +7,7 @@ import com.kanban.entity.userboard.UserBoardColumn;
 import com.kanban.model.enums.TaskColor;
 import com.kanban.repository.project.ProjectRepository;
 import com.kanban.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -18,17 +19,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private UserService userService;
-
-    @Autowired
-    public ProjectService(ProjectRepository projectRepository, UserService userService) {
-        this.projectRepository = projectRepository;
-        this.userService = userService;
-
-    }
+    private final UserService userService;
 
     public Project getProject(Long projectID){
         Project project = projectRepository.findById(projectID).orElse(null);
@@ -38,32 +33,24 @@ public class ProjectService {
         return project;
     }
 
-
-
-
-
     public void createProject(Long userID, String projectName){
         Project project = new Project();
         project.setName(projectName);
-
         UserDAO user = userService.getUser(userID);
         project.setCreator(user);
         project.addBoard(initializeProjectBoard());
-
         user.addProject(project);
         projectRepository.save(project);
     }
 
     public void leaveProject(Long userID, Long projectID){
         Project project = getProject(projectID);
-        project.getUsers().removeIf(user -> user.getId() == userID);
+        project.getUsers().removeIf(user -> user.getId().equals(userID));
         UserDAO user = userService.getUser(userID);
         user.deleteProject(project);
         projectRepository.save(project);
         userService.saveUser(user);
-
     }
-
 
     public ProjectBoard initializeProjectBoard() {
         ProjectBoard board = new ProjectBoard();
@@ -87,7 +74,6 @@ public class ProjectService {
         project.setName("default project 1");
         project.setCreator(user);
 
-
         ProjectBoard board = new ProjectBoard();
         board.setName("default board");
 
@@ -103,13 +89,12 @@ public class ProjectService {
 
         ProjectTaskComment projectTaskComment = new ProjectTaskComment();
         projectTaskComment.setAuthor(user);
-        projectTaskComment.setContent("ESSSAAAAAAAAA");
-
+        projectTaskComment.setContent("Comment");
 
 
         ProjectTaskCommentReply projectTaskCommentReply = new ProjectTaskCommentReply();
         projectTaskCommentReply.setAuthor(essa);
-        projectTaskCommentReply.setContent("MUJ WUJA !!!!");
+        projectTaskCommentReply.setContent("Content");
         projectTaskComment.addReply(projectTaskCommentReply);
         projectTask1.addComment(projectTaskComment);
 
@@ -135,15 +120,10 @@ public class ProjectService {
 
         project.addBoard(board);
 
-
-
         projectRepository.save(project);
 
         user.addProject(project);
         userService.saveUser(user);
-
-
-
 
     }
 
@@ -153,7 +133,6 @@ public class ProjectService {
         project2.setName("default project 2");
         UserDAO essa = userService.getUser(2L);
         project2.setCreator(essa);
-
 
         ProjectBoard board = new ProjectBoard();
         board.setName("default board 2 ");
@@ -191,12 +170,8 @@ public class ProjectService {
         project2.addBoard(board);
         project2.addUser(user2);
 
-
         projectRepository.save(project2);
         userService.saveUser(user2);
-
-
-
 
     }
 

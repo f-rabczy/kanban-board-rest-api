@@ -12,11 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository  extends JpaRepository<Project,Long> {
 
-    List<Project> findAllById(Long id);
-
     List<Project> findAllByUsersIsContaining(UserDAO userDAO);
-
-
 
     @NotNull Optional<Project> findById(@NotNull Long id);
 }

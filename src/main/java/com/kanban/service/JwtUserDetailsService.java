@@ -7,6 +7,7 @@ import com.kanban.entity.userboard.UserBoardColumn;
 import com.kanban.entity.userboard.UserTask;
 import com.kanban.model.enums.TaskColor;
 import com.kanban.repository.UserBoardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,20 +22,12 @@ import com.kanban.model.dto.UserDTO;
 import javax.annotation.PostConstruct;
 
 @Service
+@RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
 
-    @Autowired
-
-    private  UserRepository userRepository;
-    @Autowired
-
-    private  PasswordEncoder encoder;
-    @Autowired
-
-    private  UserBoardRepository userBoardRepository;
-
-
-
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final UserBoardRepository userBoardRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,16 +47,13 @@ public class JwtUserDetailsService implements UserDetailsService {
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.addBoard(initializeUserBoard(newUser));
-
         return userRepository.save(newUser);
-
     }
 
 
     public UserBoard initializeUserBoard(UserDAO user) {
         UserBoard userBoard = new UserBoard();
         userBoard.setName("default board");
-
         UserBoardColumn column1 = new UserBoardColumn("To Do");
         UserBoardColumn column2 = new UserBoardColumn("In Progress");
         UserBoardColumn column3 = new UserBoardColumn("Done");
@@ -109,7 +99,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         userBoard.addColumn(column3);
 
         user.addBoard(userBoard);
-
 
         userBoardRepository.save(userBoard);
         return userBoard;

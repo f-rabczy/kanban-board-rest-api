@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface UserBoardRepository extends JpaRepository<UserBoard, Long> {
 
-    @NotNull Optional<UserBoard> findById(@NotNull Long id);
-
+    Optional<UserBoard> findById(@NotNull Long id);
 }

@@ -2,6 +2,9 @@ package com.kanban.entity.project;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "project_board_column")
 public class ProjectBoardColumn {
 
@@ -28,9 +34,6 @@ public class ProjectBoardColumn {
     @OneToMany(mappedBy = "column", cascade = {CascadeType.ALL})
     private List<ProjectTask> projectTaskList = new ArrayList<>();
 
-    public ProjectBoardColumn() {
-
-    }
 
     public ProjectBoardColumn(String name){
         this.name=name;
@@ -44,33 +47,5 @@ public class ProjectBoardColumn {
         }
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ProjectBoard getProjectBoard() {
-        return projectBoard;
-    }
-
-    public void setProjectBoard(ProjectBoard projectBoard) {
-        this.projectBoard = projectBoard;
-    }
-
-    public List<ProjectTask> getProjectTaskList() {
-        return projectTaskList;
-    }
-
-    public void setProjectTaskList(List<ProjectTask> projectTaskList) {
-        this.projectTaskList = projectTaskList;
-    }
 }
 

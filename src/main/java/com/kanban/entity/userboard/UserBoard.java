@@ -2,6 +2,9 @@ package com.kanban.entity.userboard;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kanban.entity.user.UserDAO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +12,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "user_board")
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserBoard {
 
     @Id
@@ -39,36 +45,4 @@ public class UserBoard {
         column.setUserBoard(this);
     }
 
-
-    public UserDAO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDAO user) {
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<UserBoardColumn> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<UserBoardColumn> columns) {
-        this.columns = columns;
-    }
 }

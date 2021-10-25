@@ -7,6 +7,7 @@ import com.kanban.model.dto.UserDTO;
 import com.kanban.repository.ProfilePictureRepository;
 import com.kanban.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,75 +20,60 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    UserRepository userRepository;
-    ProfilePictureRepository profilePictureRepository;
+    private final UserRepository userRepository;
+    private final ProfilePictureRepository profilePictureRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository, ProfilePictureRepository profilePictureRepository) {
-        this.userRepository = userRepository;
-        this.profilePictureRepository = profilePictureRepository;
-    }
-
-    public void saveUser(UserDAO user){
+    public void saveUser(UserDAO user) {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long userID){
-        userRepository.deleteById(userID);
+    public UserDAO getTestUser() {
+        return getUser(1L);
     }
 
-    public  UserDAO getTestUser(){
-       return  getUser(1L);
-    }
-
-    public boolean checkIfUserExist(String username){
+    public boolean checkIfUserExist(String username) {
         return userRepository.findByUsername(username) != null;
     }
 
-    public long getIdByUsername(String username){
-       return userRepository.findByUsername(username).getId();
+    public long getIdByUsername(String username) {
+        return userRepository.findByUsername(username).getId();
     }
 
-    public UserDAO getUser(Long id){
-
+    public UserDAO getUser(Long id) {
         Optional<UserDAO> byId = userRepository.findById(id);
         return byId.orElse(null);
     }
 
-    public void updateUser(Long id, UserDTO user){
+    public void updateUser(Long id, UserDTO user) {
         UserDAO userToUpdate = getUser(id);
-
-
-        if(userToUpdate!=null){
+        if (userToUpdate != null) {
             boolean hasChanged = false;
-            if(!userToUpdate.getFirstName().equals(user.getFirstName()) && user.getFirstName()!= null ){
+            if (!userToUpdate.getFirstName().equals(user.getFirstName()) && user.getFirstName() != null) {
                 userToUpdate.setFirstName(user.getFirstName());
-                hasChanged=true;
+                hasChanged = true;
             }
-
-            if(!userToUpdate.getLastName().equals(user.getLastName()) && user.getLastName()!= null){
+            if (!userToUpdate.getLastName().equals(user.getLastName()) && user.getLastName() != null) {
                 userToUpdate.setLastName(user.getLastName());
-                hasChanged=true;
+                hasChanged = true;
             }
-
-            if(!userToUpdate.getEmail().equals(user.getEmail()) && user.getEmail()!=null){
+            if (!userToUpdate.getEmail().equals(user.getEmail()) && user.getEmail() != null) {
                 userToUpdate.setEmail(user.getEmail());
-                hasChanged=true;
+                hasChanged = true;
             }
-
-            if(hasChanged){
+            if (hasChanged) {
                 userRepository.save(userToUpdate);
             }
         }
     }
 
-    public void uploadImage(MultipartFile file, Long userID)  {
+    public void uploadImage(MultipartFile file, Long userID) {
         UserDAO user = getUser(userID);
         String fileName = "profilePicture" + userID;
         try {
-            ProfilePicture profilePicture = new ProfilePicture(fileName,file.getContentType(),compressBytes(file.getBytes()));
+            ProfilePicture profilePicture = new ProfilePicture(fileName, file.getContentType(), compressBytes(file.getBytes()));
             user.setProfilePicture(profilePicture);
             user.setHasProfilePicture(true);
             profilePictureRepository.save(profilePicture);
@@ -96,18 +82,17 @@ public class UserService {
         }
     }
 
-    public ProfilePicture downloadImage(Long userID){
+    public ProfilePicture downloadImage(Long userID) {
         UserDAO user = getUser(userID);
         Optional<ProfilePicture> byName = profilePictureRepository.findByName(user.getProfilePicture().getName());
-        if(byName.isPresent()){
-             return new ProfilePicture(byName.get().getName(),byName.get().getType(),decompressBytes(byName.get().getPicByte()));
-        }
-        else{
+        if (byName.isPresent()) {
+            return new ProfilePicture(byName.get().getName(), byName.get().getType(), decompressBytes(byName.get().getPicByte()));
+        } else {
             throw new RuntimeException("Something went wrong");
         }
     }
 
-    public static   byte[] compressBytes(byte[] data) {
+    public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setInput(data);
         deflater.finish();
@@ -141,7 +126,5 @@ public class UserService {
         }
         return outputStream.toByteArray();
     }
-
-
 
 }

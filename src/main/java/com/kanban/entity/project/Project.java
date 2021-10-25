@@ -3,6 +3,9 @@ package com.kanban.entity.project;
 
 
 import com.kanban.entity.user.UserDAO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +14,9 @@ import java.util.List;
 import static com.kanban.model.util.DateUtil.dateConverter;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Project {
 
     @Id
@@ -41,56 +47,6 @@ public class Project {
     public void addUser(UserDAO user){
         this.users.add(user);
         user.addProject(this);
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public Project(){
-        this.date = dateConverter();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<UserDAO> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserDAO> users) {
-        this.users = users;
-    }
-
-    public ProjectBoard getBoard() {
-        return board;
-    }
-
-    public void setBoard(ProjectBoard board) {
-        this.board = board;
-    }
-
-    public UserDAO getCreator() {
-        return creator;
-    }
-
-    public void setCreator(UserDAO creator) {
-        this.creator = creator;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     @Override

@@ -2,6 +2,9 @@ package com.kanban.entity.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kanban.entity.user.UserDAO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -11,6 +14,8 @@ import java.util.List;
 import static com.kanban.model.util.DateUtil.dateConverter;
 
 @Entity
+@Getter
+@Setter
 public class ProjectTaskComment {
 
     @Id
@@ -36,8 +41,6 @@ public class ProjectTaskComment {
     @Column(nullable = false)
     private String date;
 
-
-
     public ProjectTaskComment() {
         this.date = dateConverter();
     }
@@ -47,40 +50,4 @@ public class ProjectTaskComment {
         reply.setComment(this);
     }
 
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public UserDAO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserDAO author) {
-        this.author = author;
-    }
-
-    public ProjectTask getProjectTask() {
-        return projectTask;
-    }
-
-    public void setProjectTask(ProjectTask projectTask) {
-        this.projectTask = projectTask;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public List<ProjectTaskCommentReply> getReplies() {
-        return replies;
-    }
 }
